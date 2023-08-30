@@ -1,6 +1,6 @@
 import './App.css'
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import NewEntryLogbookSite from "./NewEntryLogbookSite/NewEntryLogbookSite.tsx";
+import NewEntrySite from "./NewEntrySite/NewEntrySite.tsx";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LogbookSite from "./LogbookSite/LogbookSite.tsx";
 import CustomerSearchSite from "./CustomerSearchSite/CustomerSearchSite.tsx";
@@ -19,7 +19,7 @@ function App() {
               <Route path="/register" element={<RegisterSite />} />
               <Route path="/" element={<ChooseCarSite />} />
               <Route path="/logbook" element={<LogbookSite />} />
-              <Route path="/newentry" element={<NewEntryLogbookSite />} />
+              <Route path="/newentry" element={<NewEntrySite />} />
               <Route path="/customersearch" element={<CustomerSearchSite />} />
               <Route path="/customerfile" element={<CustomerFileSite />} />
           </Routes>
