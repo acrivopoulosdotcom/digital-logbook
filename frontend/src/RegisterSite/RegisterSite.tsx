@@ -16,7 +16,7 @@ export default function RegisterSite() {
                         <button className="btn-fullwidth main-btn">LOGIN</button>
                     </Form>
                     <div>
-                        <Link to={"/login"} className="main-link" >ALREADY REGISTERED? LOGIN HERE!</Link>
+                        <Link to={"/login"}><div className="main-link">ALREADY REGISTERED?<br /> LOGIN HERE!</div></Link>
                     </div>
                 </div>
             </Card>
