@@ -1,0 +1,7 @@
+.btn-a-area {
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+    flex: 1;
+    gap: 24px;
+}

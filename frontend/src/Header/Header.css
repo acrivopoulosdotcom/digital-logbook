@@ -1,0 +1,16 @@
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav {
+    width: 100%;
+}
+
+.header-textlogo {
+    width: 120px;
+    border: 2px solid #0097B2;
+    border-radius: 5px;
+    padding: 8px;
+}
