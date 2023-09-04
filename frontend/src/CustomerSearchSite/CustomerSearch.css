@@ -1,0 +1,10 @@
+
+.accordion-button {
+    background-color: #0097B2 !important;
+    color: white !important;
+}
+
+.accordion-button:hover {
+    background-color: #00697c !important;
+    color: white;
+}
