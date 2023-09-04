@@ -1,0 +1,8 @@
+.card-body {
+    justify-content: flex-start;
+    padding-top: 3.75rem;
+}
+
+.no-margin-form-area {
+    margin-bottom: 0;
+}
