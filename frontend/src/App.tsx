@@ -8,6 +8,13 @@ import CustomerFileSite from "./CustomerFileSite/CustomerFileSite.tsx";
 import ChooseCarSite from "./ChooseCarSite/ChooseCarSite.tsx";
 import LoginSite from "./LoginSite/LoginSite.tsx";
 import RegisterSite from "./RegisterSite/RegisterSite.tsx";
+import StatisticsSite from "./StatisticsSite/StatisticsSite.tsx";
+import AddCarSite from "./AddCarSite/AddCarSite.tsx";
+import AccessDataSite from "./AccessDataSite/AccessDataSite.tsx";
+import SettingsSite from "./SettingsSite/SettingsSite.tsx";
+import EntriesSite from "./EntriesSite/EntriesSite.tsx";
+import SelectStatisticsSite from "./SelectStatisticSite/SelectStatisticSite.tsx";
+import StatisticIndividualSite from "./StatisticIndividualSite/StatisticIndividualSite.tsx";
 
 function App() {
 
@@ -19,7 +26,15 @@ function App() {
               <Route path="/register" element={<RegisterSite />} />
               <Route path="/" element={<ChooseCarSite />} />
               <Route path="/logbook" element={<LogbookSite />} />
+              <Route path="/accessdata" element={<AccessDataSite />} />
+              <Route path="/settings" element={<SettingsSite />} />
+              <Route path="/choosecar" element={<ChooseCarSite />} />
+              <Route path="/addcar" element={<AddCarSite />} />
+              <Route path="/statistics" element={<StatisticsSite />} />
+              <Route path="/selectstatistic" element={<SelectStatisticsSite />} />
+              <Route path="/statisticindividual" element={<StatisticIndividualSite />} />
               <Route path="/newentry" element={<NewEntrySite />} />
+              <Route path="/entries" element={<EntriesSite />} />
               <Route path="/customersearch" element={<CustomerSearchSite />} />
               <Route path="/customerfile" element={<CustomerFileSite />} />
           </Routes>
