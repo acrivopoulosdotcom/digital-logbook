@@ -12,7 +12,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 a {
@@ -70,6 +70,14 @@ input[type="password"] {
   cursor: pointer;
 }
 
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 3px solid #0097B2;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 /* reset button style */
 button {
   margin: 0;
@@ -98,6 +106,31 @@ button:hover {
   width: 100%;
 }
 
+.card-body {
+  padding-top: 2.75rem;
+}
 
+.site-img {
+  width:100px;
+  padding-bottom: 2rem;
+}
+
+h1 {
+  width: 18rem;
+  color: #4B4747;
+  margin-bottom: 0;
+  line-height: 1;
+  margin-block-start: 0;
+  margin-block-end: 0;
+
+}
+
+.reduced-width {
+  width: 18rem;
+}
+
+.btn-icon {
+  width: 15px;
+}
 
 
