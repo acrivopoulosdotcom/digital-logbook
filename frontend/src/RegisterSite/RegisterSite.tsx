@@ -11,8 +11,10 @@ export default function RegisterSite() {
                     <Image className="main-logo" src="./images/Logo.png" fluid />
                     <h3 className="main-h3">REGISTRIERUNG</h3>
                     <Form className="form-area">
-                        <input type="email" placeholder="Deine E-Mail-Adresse"></input>
-                        <input type="password" placeholder="Dein Password"></input>
+                        <input type="text" placeholder="Vorname" required></input>
+                        <input type="text" placeholder="Nachname" required></input>
+                        <input type="email" placeholder="Deine E-Mail-Adresse" required></input>
+                        <input type="password" placeholder="Dein Password" required></input>
                         <button className="btn-fullwidth main-btn">LOGIN</button>
                     </Form>
                     <div>
