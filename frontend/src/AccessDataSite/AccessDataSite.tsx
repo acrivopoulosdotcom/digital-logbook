@@ -20,12 +20,10 @@ export default function AccessDataSite() {
                             <option value="male">Herr</option>
                             <option value="x">Divers</option>
                         </Form.Select>
-                        <input type="text" placeholder="Nachname"></input>
                         <input type="text" placeholder="Vorname"></input>
                         <input type="text" placeholder="Nachname"></input>
-                        <input type="text" placeholder="Deine E-Mail-Adresse"></input>
-                        <input type="text" placeholder="Dein aktuelles Passwort"></input>
-                        <input type="text" placeholder="Dein neues Passwort"></input>
+                        <input type="email" placeholder="Deine E-Mail-Adresse"></input>
+                        <input type="password" placeholder="Dein Passwort"></input>
                         <div>
                             <button className="btn-fullwidth">Bestätigen</button>
                         </div>
