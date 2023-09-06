@@ -12,12 +12,14 @@ import java.util.List;
 @RequestMapping("/api/car")
 public class CarController {
 
-    CarService carService;
+    private final IdService idService;
+
+    private final CarService carService;
 
     @GetMapping
     public List<Car> getAllCars() { return carService.getAllCars(); }
 
     @PostMapping
-    public Car addCar(@RequestBody Car car) throws Exception { return carService.addCar(car); }
+    public Car addCar(@RequestBody Car car) throws Exception { return carService.addCar(car.withId(idService.generateID())); }
 
 }
