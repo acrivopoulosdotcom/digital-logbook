@@ -30,32 +30,40 @@ export default function SelectDaySite() {
 
     const [formattedDate, setFormattedDate] = useState("");
 
-    // const changeStatus = (entryId: string) => {
-    //     // Find the entry by ID
-    //     const updatedEntries = entries.map((entry) => {
-    //         if (entry.id === entryId) {
-    //             // Hier den Status ändern, zum Beispiel auf "done"
-    //             entry.status = "done";
-    //         }
-    //         return entry;
-    //     });
-    //
-    //     // Aktualisieren Sie den State mit den aktualisierten Einträgen
-    //     setEntries(updatedEntries);
-    //
-    //     // Sende die Aktualisierung ans Backend
-    //     axios({
-    //         method: 'put', // Verwenden Sie die richtige HTTP-Methode für die Aktualisierung
-    //         url: `/api/entries/changeStatus/${entryId}`, // Geben Sie die richtige URL zum Aktualisieren des Eintrags an
-    //         data: { status: "done" }, // Passen Sie die Daten an, die Sie ans Backend senden möchten
-    //     })
-    //         .then(function (response) {
-    //             console.log("Status erfolgreich geändert: ", response.status);
-    //         })
-    //         .catch(function (error) {
-    //             console.error("Fehler beim Ändern des Status: ", error);
-    //         });
-    // };
+    const [reloadKey, setReloadKey] = useState(0);
+
+    const ChangeStatus = (entryId: string) => {
+        // Find the entry by ID
+        const updatedEntries = entries.map((entry) => {
+            if (entry.id === entryId) {
+                entry.status = "done";
+            }
+            return entry;
+        });
+
+        setEntries(updatedEntries);
+
+        axios({
+            method: 'put',
+            url: `/api/entries/changeStatus/${entryId}`,
+            data: { status: "done" },
+        })
+            .then(function (response) {
+                console.log("Status erfolgreich geändert: ", response.status);
+            })
+            .catch(function (error) {
+                console.error("Fehler beim Ändern des Status: ", error);
+            });
+    };
+
+    const handleCalendarChange = (selectedDate) => {
+        //Was ist der Unterschied in der Funktionsweise von function und const als Funktion (Schreibweise)
+        //selectedDate ist hier markiert
+        //wie können hier jetzt Daten übertragen werden ohne
+        const newFormattedDate = selectedDate.toLocaleString().split(',')[0];
+        setFormattedDate(newFormattedDate);
+        setReloadKey((prevKey) => prevKey + 1);
+    }
 
     useEffect(() => {
         const formattedDate = currentDate;
@@ -71,7 +79,7 @@ export default function SelectDaySite() {
                 console.log(userId);
                 console.log(formattedDate);
             })
-    }, [userId, formattedDate])
+    }, [userId, formattedDate, reloadKey, currentDate])
 
     return (
         <>
@@ -83,10 +91,12 @@ export default function SelectDaySite() {
                 </Card.Title>
                 <Calendar
                     value={date}
-                    onChange={(selectedDate) => setFormattedDate(selectedDate.toLocaleString().split(',')[0])}
+                    onChange={handleCalendarChange}
+                    //wird date aufgrund der Valuezuweisung automatisch in meine Funktion übertragen?
+
                 />
                 <p>formattedDate: {formattedDate}</p>
-                <p>currentDate: {currentDate}</p>
+                {/*<p>currentDate: {currentDate}</p>*/}
                 <Card.Body className="card-body" style={{ width: '18rem' }}>
                         <p>Status: OPEN</p>
                         {entries.map((entry) => {
@@ -97,10 +107,16 @@ export default function SelectDaySite() {
                                             <div>
                                                 <p>{entry.todoTitel}</p>
                                                 <p>{entry.notes}</p>
-                                                <input type={"text"} ></input>
-                                                <input type={"textarea"} ></input>
+                                                <p>{entry.prio}</p>
+                                                <p>{entry.label}</p>
+                                                <p>{entry.status}</p>
+                                                <p>{entry.formattedDate}</p>
                                                 <button className={"btn-a-standard"}>Speichern</button>
                                                 <button className={"btn-a-standard"}
+                                                        onClick={() => ChangeStatus(entry.id)}
+                                                        //Wann muss ich diese Schreibweise anwenden
+                                                    //hier habe ich einen definierten Wert zur Übergabe, der direkt ausgelesen werden muss
+                                                    //aus einer Schleife?
                                                 >
                                                     Erledigt
                                                 </button>
@@ -122,6 +138,7 @@ export default function SelectDaySite() {
                                     <div>
                                         <div>
                                             <p className={"durchgestrichen"}>{entry.todoTitel}</p>
+                                            <p>{entry.formattedDate}</p>
                                         </div>
                                         <Button className={"btn-reverse"}
                                         >
