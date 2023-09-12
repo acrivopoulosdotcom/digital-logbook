@@ -1,17 +1,17 @@
-import "./SelectStatistic.css";
+import "./EditEntry.css";
 import {Card, Image} from "react-bootstrap";
 import Header from "../Header/Header.tsx";
 import Footer from "../Footer/Footer.tsx";
 import {Link} from "react-router-dom";
 
-export default function SelectStatisticsSite () {
+export default function EditEntrySite () {
     return (
         <>
             <Card className="wrapper">
                 <Header />
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/select-statistic-img.png"></Image>
-                    <h1>Wähle deine gewünschte Statistik aus</h1>
+                    <h1>Eintrag bearbeiten</h1>
                 </Card.Title>
                 <Card.Body className="card-body" style={{ width: '18rem' }}>
                     <div className="btn-area gap">
@@ -28,7 +28,7 @@ export default function SelectStatisticsSite () {
                 <Footer />
             </Card>
 
-            <p>STATISTICS SITE</p>
+            <p>EDIT ENTRY</p>
         </>
     )
 }
