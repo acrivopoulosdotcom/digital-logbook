@@ -1,3 +1,18 @@
+root {
+    display: flex;
+    flex-direction: column;
+}
+
+.card {
+    flex: 1 !important;
+}
+
+
+
+.card-body {
+    flex: 1 !important;
+}
+
 .form-area {
     display: flex;
     flex-direction: column;
