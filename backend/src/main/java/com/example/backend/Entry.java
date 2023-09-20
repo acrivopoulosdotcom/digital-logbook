@@ -18,7 +18,7 @@ public class Entry {
 
     private String status;
 
-    private String todoTitel;
+    private String titel;
 
     private String formattedDate;
 
