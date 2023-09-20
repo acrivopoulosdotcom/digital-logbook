@@ -24,7 +24,6 @@ export default function SelectStatusSite() {
 
     function handleSelectStatus(event:ChangeEvent<HTMLSelectElement>) {
         setStatus(event.target.value);
-        console.log(status);
     }
 
     async function getResponseAfterDelete (userId: string, formattedDate: string) {
@@ -34,7 +33,6 @@ export default function SelectStatusSite() {
                 method: 'get',
                 url:`/api/entries/getAllEntriesByDate/${userId}/${formattedDate}`,
             });
-            console.log("Get Response Status - getResponseAfterDelete: ", getResponse.status);
             setEntries(getResponse.data);
         } catch (error) {
             console.log("Error get request: ", error);
@@ -62,8 +60,6 @@ export default function SelectStatusSite() {
         const updatedEntries = entries.map((entry) => {
             if (entry.id === entryId) {
                 entry.status = "Abgeschlossen";
-                console.log("test");
-                console.log("Entry Status nach dem Wechsel: ",entry.status);
             }
             return entry;
         });

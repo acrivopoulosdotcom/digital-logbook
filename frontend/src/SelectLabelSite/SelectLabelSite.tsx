@@ -27,7 +27,7 @@ export default function SelectLabelSite() {
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [label, setLabel] = useState<string>("");
-    const [status, setStatus] = useState<string>("");
+    const [status, setStatus] = useState<string>("erledigen");
     const [entries, setEntries] = useState<Entry[]>([]);
     const userId = 1;
 
@@ -35,8 +35,6 @@ export default function SelectLabelSite() {
         const updatedEntries = entries.map((entry) => {
             if (entry.id === entryId) {
                 entry.status = "Abgeschlossen";
-                console.log("test");
-                console.log("Entry Status nach dem Wechsel: ",entry.status);
             }
             return entry;
         });
@@ -49,7 +47,6 @@ export default function SelectLabelSite() {
             .then(function (response) {
                 console.log("Status erfolgreich geändert: ", response.status);
                 console.log("Entry-Status: ", entryId);
-
                 const filteredEntries = updatedEntries.filter((entry) => entry.status === entryStatus);
                 setEntries(filteredEntries);
             })
@@ -125,8 +122,6 @@ export default function SelectLabelSite() {
             url: '/api/label/getAllLabels/' + userId,
         })
             .then(function(response) {
-                console.log("Response Status: ", response.status);
-                console.log("Response Body: ", response.data);
                 setLabels(response.data);
                 window.scrollTo(0,0);
             })
@@ -148,7 +143,6 @@ export default function SelectLabelSite() {
                         ))}
                     </select>
                     <select className={"btn-a-standard btn-fullwidth"} onChange={handleSelectStatus}>
-                        <option value={"Erledigen"}>Bitte Status auswählen</option>
                         <option value={"Erledigen"}>Erledigen</option>
                         <option value={"Abgeschlossen"}>Abgeschlossen</option>
                     </select>
