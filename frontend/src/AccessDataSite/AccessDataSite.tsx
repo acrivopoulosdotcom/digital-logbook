@@ -25,7 +25,7 @@ export default function AccessDataSite() {
                         <input type="email" placeholder="Deine E-Mail-Adresse"></input>
                         <input type="password" placeholder="Dein Passwort"></input>
                         <div>
-                            <button className="btn-fullwidth">Bestätigen</button>
+                            <button className=" btn-a-standard btn-fullwidth">Bestätigen</button>
                         </div>
                     </Form>
                 </Card.Body>
