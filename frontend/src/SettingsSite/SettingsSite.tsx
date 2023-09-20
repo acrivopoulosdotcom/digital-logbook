@@ -28,7 +28,7 @@ export default function SettingsSite() {
                 </Card.Body>
                 <Footer />
             </Card>
-            <p>SETTINGS</p>
+            {/*<p>SETTINGS</p>*/}
         </>
     )
 }
