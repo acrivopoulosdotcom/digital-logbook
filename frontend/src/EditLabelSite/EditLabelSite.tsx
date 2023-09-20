@@ -67,7 +67,7 @@ export default function EditLabelSite() {
                 </Card.Body>
                 <Footer />
             </Card>
-            <p>ADD LABEL</p>
+            {/*<p>ADD LABEL</p>*/}
         </>
     ))
 }
