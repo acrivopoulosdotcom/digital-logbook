@@ -1,8 +1,7 @@
 import "./Login.css";
 import {Card, Form, Image} from "react-bootstrap";
-import Header from "../Header/Header.tsx";
 import {Link, useNavigate} from "react-router-dom";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import axios from "axios";
 
 export default function LoginSite() {
@@ -27,26 +26,29 @@ export default function LoginSite() {
             .catch((error) => console.log(error))
     }
 
+    useEffect(() => {
+        window.scrollTo(0,0);
+    }, []);
+
     return (
         <>
             <Card className="wrapper">
-                <Header />
-                <div className="card-body" style={{ width: '18rem' }}>
-                    <Image className="main-logo" src="./images/Logo.png" fluid />
+                <div className="card-body no-padding" style={{ width: '18rem' }}>
+                    <Image className="main-logo" src="./images/logo.png" fluid />
                     <h3 className="main-h3">LOGIN</h3>
                     <Form className="form-area" onSubmit={login}>
-                        <input type="email" placeholder="Deine E-Mail-Adresse" onChange={onChangeHandlerEmail}></input>
-                        <input type="password" placeholder="Dein Password" onChange={onChangeHandlerPassword}></input>
-                        <button className="btn-fullwidth main-btn">LOGIN</button>
+                        <input type="email" placeholder="Deine E-Mail-Adresse" onChange={onChangeHandlerEmail} required={true}></input>
+                        <input type="password" placeholder="Dein Password" onChange={onChangeHandlerPassword} required={true}></input>
+                        <button className="btn-a-standard btn-fullwidth">LOGIN</button>
                     </Form>
 
                     <div>
-                        <Link to={"/register"} className="main-link" >NEW HERE? REGISTER HERE!</Link>
+                        <Link to={"/register"}><div className="main-link btn-fullwidth" >NEW HERE? REGISTER HERE!</div></Link>
                     </div>
                 </div>
 
             </Card>
-            <p>LOGIN</p>
+            {/*<p>LOGIN</p>*/}
         </>
     )
 }

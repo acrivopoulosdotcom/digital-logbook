@@ -3,12 +3,8 @@ package com.example.backend;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -26,11 +22,12 @@ public class EntryService {
         return entryRepository.save(entry.withId(idService.generateID()));
     }
 
-    public Entry removeEntry(String id) throws EntryDoesNotExistException {
+
+    public Entry deleteEntryById(String id) throws EntryDoesNotExistException {
         boolean containsNotEntry = !entryRepository.existsById(id);
 
         if (containsNotEntry) {
-            throw new EntryDoesNotExistException("Entry does not exists");
+            throw new EntryDoesNotExistException("Entry does not exist");
         }
 
         entryRepository.deleteById(id);
@@ -45,25 +42,16 @@ public class EntryService {
         return entryRepository.save(entry);
     }
 
-    public Entry getEntryById(String id) throws EntryDoesNotExistException {
-        boolean containsNotEntry = !entryRepository.existsById(id);
-        if (containsNotEntry) {
-            throw new EntryDoesNotExistException("Entry does not exists");
-        }
-        return entryRepository.findById(id).orElse(null);
-    }
-
-    public Set<String> getAllIds() {
-        List<Entry> entries = entryRepository.findAll();
-        return entries.stream().map(e -> e.getId()).collect(Collectors.toSet());
-    }
-
     public List<Entry> getAllEntriesByUserIdAndSelectedDay(String userId, String formattedDate) {
         return entryRepository.findAllByUserIdAndFormattedDate(userId, formattedDate);
     }
 
     public List<Entry> getAllEntriesByUserIdAndLabel(String userId, String label) {
         return entryRepository.findAllByUserIdAndAndLabel(userId, label);
+    }
+
+    public List<Entry> getAllEntriesByUserIdAndSelectedStatus(String userId, String selectedStatus) {
+        return entryRepository.findAllByUserIdAndStatus(userId, selectedStatus);
     }
 
     public Entry changeStatusById(String id, Entry updatedEntry) {
@@ -82,7 +70,7 @@ public class EntryService {
         }
     }
 
-    public void deleteEntryById(String id) {
-        entryRepository.deleteById(id);
+    public List<Entry> getAllEntriesByUserIdAndStatusAndFormattedDate(String userId, String status, String formattedDate) {
+        return entryRepository.findAllByUserIdAndStatusAndFormattedDate(userId, status,formattedDate);
     }
 }

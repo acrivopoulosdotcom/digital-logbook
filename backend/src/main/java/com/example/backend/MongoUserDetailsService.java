@@ -12,8 +12,6 @@ public class MongoUserDetailsService {
     private final MongoUserRepository userRepository;
     private final IdService idService;
 
-    public List<MongoUser> getAllMongoUser() {return userRepository.findAll();}
-
     public MongoUser saveUser(MongoUser user) {
         if (userRepository.findMongoUserByEmail(user.getEmail()).equals(user.getEmail())) {
             throw new IllegalArgumentException("Email already taken");

@@ -56,7 +56,7 @@ export default function EntriesSite() {
                 </Card.Body>
                 <Footer />
             </Card>
-            <p>ENTRIES</p>
+            {/*<p>ENTRIES</p>*/}
         </>
     );
 }

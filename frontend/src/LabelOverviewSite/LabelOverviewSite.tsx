@@ -18,7 +18,7 @@ export default function LabelOverviewSite() {
     const userId = 1;
     const nav = useNavigate()
 
-    function deleteLabel(labelId) {
+    function deleteLabel(labelId:string) {
         axios.delete("/api/label/deleteLabel/" +labelId)
             .then(() => {
                 console.log(labelId);
@@ -46,6 +46,7 @@ export default function LabelOverviewSite() {
     }, [userId, refreshData]);
 
     useEffect(() => {
+
             axios({
                 method: 'get',
                 url: '/api/label/getAllLabels/' + userId,
@@ -54,6 +55,7 @@ export default function LabelOverviewSite() {
                     console.log("Response Status: ", response.status);
                     console.log("Response Body: ", response.data);
                     setLabels(response.data);
+                    window.scrollTo(0,0);
                 })
     }, [userId]);
 
@@ -65,7 +67,7 @@ export default function LabelOverviewSite() {
             <Card className="wrapper">
                 <Header />
                 <Card.Title className="card-title">
-                    <Image className="site-img" src="./images/select-car.png"></Image>
+                    <Image className="site-img" src="./images/label-overview-img.png"></Image>
                     <h1>Deine <br />Label-Übersicht</h1>
                 </Card.Title>
                 <Card.Body className="card-body" style={{ width: '18rem' }}>
@@ -80,7 +82,7 @@ export default function LabelOverviewSite() {
                 </Card.Body>
                 <Footer />
             </Card>)}
-            <p>LABEL OVERVIEW</p>
+            {/*<p>LABEL OVERVIEW</p>*/}
         </>
     );
 }

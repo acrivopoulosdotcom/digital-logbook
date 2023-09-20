@@ -2,8 +2,6 @@ package com.example.backend;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -14,4 +12,7 @@ public interface EntryRepository extends MongoRepository<Entry, String> {
 
     List<Entry> findAllByUserIdAndAndLabel(String userId, String label);
 
+    List<Entry> findAllByUserIdAndStatus(String userId, String status);
+
+    List<Entry> findAllByUserIdAndStatusAndFormattedDate(String userId, String status, String formattedDate);
 }

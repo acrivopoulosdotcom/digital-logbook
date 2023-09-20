@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface LabelRepository extends MongoRepository<Label, String> {
-
     List<Label> findLabelsByUserId(String userId);
 
 }

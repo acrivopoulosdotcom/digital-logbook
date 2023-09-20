@@ -8,11 +8,12 @@ import {useNavigate} from "react-router-dom";
 
 export default function AddLabelSite() {
 
-    const [userId, setUserId] = useState("");
+    const [userId, setUserId] = useState("1");
 
     const [name, setName] = useState("");
 
     const nav = useNavigate();
+
 
     function onChangeHandlerUserId(event: ChangeEvent<HTMLInputElement>) {
         setUserId(event.target.value)
@@ -34,23 +35,23 @@ export default function AddLabelSite() {
             <Card className="wrapper">
                 <Header />
                 <Card.Title className="card-title">
-                    <Image className="site-img" src="./images/add-car-img.png"></Image>
+                    <Image className="site-img" src="./images/add-label-img.png"></Image>
 
                     <h1>Label hinzufügen</h1>
 
                 </Card.Title>
                 <Card.Body className="card-body" style={{ width: '18rem' }}>
                     <Form className="form-area" onSubmit={addLabel}>
-                        <input type="number" placeholder="UserId" required={true} onChange={onChangeHandlerUserId}></input>
-                        <input type="text" placeholder="Label-Name" required={true} onChange={onChangeHandlerName}></input>
+                        <input type="hidden" placeholder="UserId" className={"text-center"} required={true} onChange={onChangeHandlerUserId}></input>
+                        <input type="text" placeholder="Label-Name" className={"text-center"} required={true} onChange={onChangeHandlerName}></input>
                         <div>
-                            <button className="btn-fullwidth">Hinzufügen</button>
+                            <button className="btn-a-standard btn-fullwidth">Hinzufügen</button>
                         </div>
                     </Form>
                 </Card.Body>
                 <Footer />
             </Card>
-            <p>ADD LABEL</p>
+            {/*<p>ADD LABEL</p>*/}
         </>
     )
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Header from "../Header/Header.tsx";
 import "./NewEntry.css";
 import {Card, Form, Image} from "react-bootstrap";
@@ -16,18 +17,18 @@ type Label = {
 export default function NewEntrySite() {
 
     const nav = useNavigate();
-    const [todoTitel, setTodoTitel] = useState("");
+    const [titel, setTitel] = useState("");
     const [prio, setPrio] = useState("");
     const [labels, setLabels] = useState<Label[]>([]);
     const [label, setLabel] = useState("");
     const [notes, setNotes] = useState("");
-    const status = "open";
+    const status = "Erledigen";
     const userId = 1;
     const [date, setDate] = useState<Date>(new Date())
     const formattedDate = date.toLocaleDateString();
 
-    function handleOnChangeTodoTitel(event:ChangeEvent<HTMLInputElement>) {
-        setTodoTitel(event.target.value);
+    function handleOnChangeTitel(event:ChangeEvent<HTMLInputElement>) {
+        setTitel(event.target.value);
     }
 
     function handleOnChangePrio(event:ChangeEvent<HTMLSelectElement>) {
@@ -46,13 +47,14 @@ export default function NewEntrySite() {
 
     function saveNewEntry(event:FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        axios.post('/api/entries/addEntry', {userId, status, formattedDate, todoTitel, prio, label, notes})
-            .then(() => console.log(userId, status, formattedDate, todoTitel, prio, label, notes))
+        axios.post('/api/entries/addEntry', {userId, status, formattedDate, titel, prio, label, notes})
+            .then(() => console.log(userId, status, formattedDate, titel, prio, label, notes))
             .then(() => nav("/logbook"))
             .catch((error) => console.log(error))
     }
 
     useEffect(()=> {
+        window.scrollTo(0,0);
             axios({
                 method: 'get',
                 url: '/api/label/getAllLabels/' + userId,
@@ -70,41 +72,41 @@ export default function NewEntrySite() {
                 <Header />
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/new-entry-img.png"></Image>
-                    <h1>Neues To-do</h1>
+                    <h2>Neuer Eintrag</h2>
                 </Card.Title>
-                <Card.Body className="card-body" style={{ width: '18rem' }}>
+                <Card.Body className="card-body no-pad" style={{ width: '18rem' }}>
+                    <Calendar
+                        value={date}
+                        onChange={(selectedDate) => setDate(selectedDate)}
+                        defaultView={"month"}
+                        locale="de-De"
+                    />
                     <Form className="form-area" onSubmit={saveNewEntry}>
-                        <Calendar
-                            value={date}
-                            onChange={(selectedDate) => setDate(selectedDate)}
-                            defaultView={"month"}
-                            locale="de-De"
-                        />
-                        {<p>Selected Date: {formattedDate}</p>}
-                        <input type={"text"} placeholder={"Aufgabenname"} onChange={handleOnChangeTodoTitel}></input>
-                        <input type={"textarea"} placeholder={"Notizen"} onChange={handleOnChangeNotes}></input>
-                        <Form.Select aria-label="Default select example" required onChange={handleOnChangePrio}>
-                            <option>Priorität wählen</option>
-                            <option value={"prio-1"}>Priorität 1</option>
-                            <option value={"prio-2"}>Priorität 2</option>
-                            <option value={"prio-3"}>Priorität 3</option>
-                            <option value={"prio-4"}>Priorität 4</option>
+
+                        <h4 className={"display-date"}>{formattedDate}</h4>
+                        <input type={"text"} placeholder={"Eintrag"} className={"text-center"} onChange={handleOnChangeTitel} required={true}></input>
+                        <input type={"textarea"} placeholder={"Ergänzende Notizen"} className={"text-center"} onChange={handleOnChangeNotes}></input>
+                        <Form.Select aria-label="Default select example" onChange={handleOnChangePrio}>
+                            <option className={"text-center"}>Priorität wählen</option>
+                            <option value={"Prio 1"} className={"text-center"}>Prio 1</option>
+                            <option value={"Prio 2"} className={"text-center"}>Prio 2</option>
+                            <option value={"Prio 3"} className={"text-center"}>Prio 3</option>
                         </Form.Select>
-                        <Form.Select aria-label="Default select example" required onChange={handleOnChangeLabel}>
-                            <option>Label wählen</option>
+                        <Form.Select aria-label="Default select example" onChange={handleOnChangeLabel}>
+                            <option className={"text-center"}>Label wählen</option>
                             {labels.length > 0 && labels.map((label) => (
                                 <option key={label.id} value={label.name}>{label.name}</option>
                             ))}
                         </Form.Select>
                         <div>
-                            <button className={"btn-fullwidth"} >Hinzufügen</button>
+                            <button className={"btn-a-standard btn-fullwidth"}>Hinzufügen</button>
                         </div>
                         <Link className={"btn-a-standard fullwidth"} to={"/logbook"}>Abbrechen</Link>
                     </Form>
                 </Card.Body>
                 <Footer />
             </Card>
-            <p>NEW ENTRY</p>
+            {/*<p>NEW ENTRY</p>*/}
         </>
     ))
 }

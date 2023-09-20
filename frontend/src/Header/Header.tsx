@@ -10,8 +10,10 @@ export default function Header() {
 
     const [isHovered, setIsHovered] = useState(false);
     const [isActive, setIsActive] = useState(false);
+    const isHeaderHidden: boolean = false;
+
     return (
-        <header id="header">
+        <header id="header" className={`${isHeaderHidden ? 'header-hidden' : ''}`}>
                 <Navbar expand={'xxl'} className="bg-body-tertiary mb-3">
                     <Container fluid>
                         <Nav.Link className="container-textlogo"
@@ -47,27 +49,15 @@ export default function Header() {
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown
-                                        title="Deine PKWs"
+                                        title="Deine Label"
                                         id={`offcanvasNavbarDropdown-expand-${'xxl'}`}
                                     >
-                                        <NavDropdown.Item href="/choosecar">
-                                            Auswahl eines PKWs
+                                        <NavDropdown.Item href="/labelOverview">
+                                            Label-Übersicht
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/addcar">
-                                            Hinzufügen eines PKWs
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                    <NavDropdown
-                                        title="Deine Kunden"
-                                        id={`offcanvasNavbarDropdown-expand-${'xxl'}`}
-                                    >
-                                        <NavDropdown.Item href="/customersearch">
-                                            Kundenübersicht
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/customerfile">
-                                            Hinzufügen von Kunden
+                                        <NavDropdown.Item href="/addLabel">
+                                            Hinzufügen eines Labels
                                         </NavDropdown.Item>
                                     </NavDropdown>
                                     <NavDropdown
@@ -82,7 +72,6 @@ export default function Header() {
                                             Dein Logbook
                                         </NavDropdown.Item>
                                     </NavDropdown>
-                                    <Nav.Link href="/statistics">Statistiken</Nav.Link>
                                     <Nav.Link href="/login">Logout</Nav.Link>
 
                                 </Nav>

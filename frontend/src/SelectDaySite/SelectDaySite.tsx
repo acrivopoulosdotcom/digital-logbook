@@ -1,16 +1,21 @@
+// @ts-nocheck
 import "./SelectDay.css";
-import {Button, Card, Image} from "react-bootstrap";
+import {Card, Image} from "react-bootstrap";
 import Header from "../Header/Header.tsx";
 import Footer from "../Footer/Footer.tsx";
-import {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
+
+type ValuePiece = Date;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 type Entry = {
     id: string,
     userId: string,
     status: string,
-    todoTitel: string,
+    titel: string,
     description: string,
     formattedDate: string,
     prio: string,
@@ -21,138 +26,162 @@ type Entry = {
 export default function SelectDaySite() {
 
     const userId: string = "1";
-
-    const date = new Date();
-
-    const currentDate = date.toLocaleDateString();
-
+    const [date, setDate] = useState<Value>(new Date());
+    const currentDate = date.toLocaleString("de-DE");
     const [entries, setEntries] = useState<Entry[]>([]);
-
     const [formattedDate, setFormattedDate] = useState("");
+    const [status, setStatus] = useState("Erledigen");
+    console.log("Entries - Anfang der Seite: ",entries);
 
-    const [reloadKey, setReloadKey] = useState(0);
-
-    const ChangeStatus = (entryId: string) => {
-        // Find the entry by ID
+    const changeStatus = (entryId: string, entryStatus: string) => {
         const updatedEntries = entries.map((entry) => {
             if (entry.id === entryId) {
-                entry.status = "done";
+                entry.status = "Abgeschlossen";
+                console.log("test");
+                console.log("Entry Status nach dem Wechsel: ",entry.status);
             }
             return entry;
         });
 
-        setEntries(updatedEntries);
-
         axios({
             method: 'put',
             url: `/api/entries/changeStatus/${entryId}`,
-            data: { status: "done" },
+            data: { status: "Abgeschlossen" },
         })
             .then(function (response) {
                 console.log("Status erfolgreich geändert: ", response.status);
+                console.log("Entry-Status: ", entryId);
+
+                const filteredEntries = updatedEntries.filter((entry) => (
+                    entry.status === entryStatus
+            ));
+                setEntries(filteredEntries);
             })
             .catch(function (error) {
                 console.error("Fehler beim Ändern des Status: ", error);
             });
     };
 
-    const handleCalendarChange = (selectedDate) => {
-        //Was ist der Unterschied in der Funktionsweise von function und const als Funktion (Schreibweise)
-        //selectedDate ist hier markiert
-        //wie können hier jetzt Daten übertragen werden ohne
-        const newFormattedDate = selectedDate.toLocaleString().split(',')[0];
+    async function getResponseAfterDelete (userId: string, formattedDate: string) {
+
+        try {
+            const getResponse = await axios({
+                method: 'get',
+                url:`/api/entries/getAllEntriesByDate/${userId}/${formattedDate}`,
+            });
+            console.log("Get Response Status - getResponseAfterDelete: ", getResponse.status);
+            setEntries(getResponse.data);
+        } catch (error) {
+            console.log("Error get request: ", error);
+        }
+    }
+
+    const handleDeleteBtn = async (id: string, userId: string, formattedDate: string) => {
+
+        try {
+            const deleteResponse = await axios({
+                method: 'delete',
+                url: `/api/entries/deleteEntry/${id}`,
+            });
+            console.log("Eintrag gelöscht " + id);
+            console.log("Delete Status: ", deleteResponse.status)
+
+        } catch (error) {
+            console.log("Error handling delete request: ", error);
+        }
+
+        await getResponseAfterDelete(userId, formattedDate);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const handleCalendarChange = (selectedDate: Value, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const newFormattedDate = selectedDate;
+        setDate(selectedDate);
+        console.log("NewFormattedDate: Z. 71" + newFormattedDate);
         setFormattedDate(newFormattedDate);
-        setReloadKey((prevKey) => prevKey + 1);
+    }
+
+    function handleSelectStatus(event:ChangeEvent<HTMLSelectElement>) {
+        const selectedStatus = event.target.value;
+        setStatus(selectedStatus);
+        event.preventDefault();
+        axios({
+            method: 'get',
+            url: `/api/entries/getAllEntriesByStatus/${userId}/${selectedStatus}`,
+        })
+            .then(function(response) {
+                console.log("Response Status/SelectStatus: ", response.status);
+                console.log("Response Body/SelectStatus: ", response.data);
+                console.log("Selected Status: ", status);
+               setEntries(response.data)
+            })
     }
 
     useEffect(() => {
-        const formattedDate = currentDate;
+        const formattedDate = currentDate.toLocaleString().split(',')[0];
 
         axios({
             method: 'get',
-            url:`/api/entries/getAllEntriesByUserIdAndSelectedDay/${userId}/${formattedDate}`,
+            url:`/api/entries/getAllEntriesByDate/${userId}/${formattedDate}`,
         })
             .then(function (response) {
                 console.log("Response Status: ", response.status);
                 console.log("Response Body: ", response.data);
-                setEntries(response.data);
+                const filteredEntries = response.data.filter((entry) => entry.status === status);
+                setEntries(filteredEntries);
                 console.log(userId);
-                console.log(formattedDate);
+                console.log("FormattedDate Zeile 89: " + formattedDate);
             })
-    }, [userId, formattedDate, reloadKey, currentDate])
+    }, [userId, formattedDate, currentDate,status])
 
     return (
         <>
             <Card className="wrapper">
                 <Header />
                 <Card.Title className="card-title">
-                    <Image className="site-img" src="./images/customer-file-img.png" ></Image>
-                    <h1>HEUTE</h1>
+                    <Image className="site-img" src="./images/calendar-img.png"></Image>
+                    <h2>Wähle den Tag</h2>
                 </Card.Title>
-                <Calendar
-                    value={date}
-                    onChange={handleCalendarChange}
-                    //wird date aufgrund der Valuezuweisung automatisch in meine Funktion übertragen?
 
-                />
-                <p>formattedDate: {formattedDate}</p>
-                {/*<p>currentDate: {currentDate}</p>*/}
-                <Card.Body className="card-body" style={{ width: '18rem' }}>
-                        <p>Status: OPEN</p>
-                        {entries.map((entry) => {
-                            if (entry.status === "open") {
-                                return (
-                                    <Card className={"input-card"} key={entry.id}>
-                                        <div>
-                                            <div>
-                                                <p>{entry.todoTitel}</p>
-                                                <p>{entry.notes}</p>
-                                                <p>{entry.prio}</p>
-                                                <p>{entry.label}</p>
-                                                <p>{entry.status}</p>
-                                                <p>{entry.formattedDate}</p>
-                                                <button className={"btn-a-standard"}>Speichern</button>
-                                                <button className={"btn-a-standard"}
-                                                        onClick={() => ChangeStatus(entry.id)}
-                                                        //Wann muss ich diese Schreibweise anwenden
-                                                    //hier habe ich einen definierten Wert zur Übergabe, der direkt ausgelesen werden muss
-                                                    //aus einer Schleife?
-                                                >
-                                                    Erledigt
-                                                </button>
-                                                <button className={"btn-a-standard"}
-                                                >
-                                                    Löschen
+                <Card.Body className="card-body gap no-pad" style={{ width: '18rem' }}>
+                    <Calendar
+                        value={date}
+                        onChange={handleCalendarChange}
+                    />
+                    <div className={"flex-row"}>
+                        <select className={"btn-a-standard btn-fullwidth text-center"} onChange={handleSelectStatus}>
+                            <option value={"Erledigen"}>Erledigen</option>
+                            <option value={"Abgeschlossen"}>Abgeschlossen</option>
+                        </select>
+                    </div>
+                        {entries && entries.length>0 ? entries.map((entry) => (
+                                    <div className={"entry-board"} key={entry.id}>
+                                        <div className={"entry-card input-form-reverse"}>
+                                            <div className={"border-white padding-top"} key={entry.id}>
+                                                <p className={"text-white"}>{entry.titel}</p>
+                                                <p className={"text-white"}>{entry.notes}</p>
+                                                <p className={"text-white"}>{entry.prio}</p>
+                                            </div>
+                                            <div className={"btn-row"}>
+                                                {entry.status === "Erledigen" && (
+                                                    <button className={"btn-a-standard btn-fullwidth"}
+                                                        onClick={() => changeStatus(entry.id, entry.status, entry.formattedDate)}>
+                                                            <Image className={"btn-icon-size"} src={"/icons/white-done.png"}/>
+                                                    </button>
+                                                )}
+                                                <button className={"btn-a-standard btn-fullwidth"} onClick={() => handleDeleteBtn(entry.id, entry.userId, entry.formattedDate)}>
+                                                    <Image className={"btn-icon-size"} src={"/icons/white-cross.png"}/>
                                                 </button>
                                             </div>
                                         </div>
-                                    </Card>
-                                );
-                            }
-                        })}
-                    <p>Status: DONE</p>
-                    {entries.map((entry) => {
-                        if (entry.status === "done") {
-                            return (
-                                <Card className={"input-card-reverse"} key={entry.id}>
-                                    <div>
-                                        <div>
-                                            <p className={"durchgestrichen"}>{entry.todoTitel}</p>
-                                            <p>{entry.formattedDate}</p>
-                                        </div>
-                                        <Button className={"btn-reverse"}
-                                        >
-                                            Löschen
-                                        </Button>
                                     </div>
-                                </Card>
-                            );
-                        }
-                    })}
+                                )) : (
+                                <p></p>
+                            )}
                     </Card.Body>
                 <Footer />
             </Card>
-            <div>SELECTED DAY</div>
+            {/*<div>SELECTED DAY</div>*/}
         </>
     )
 }

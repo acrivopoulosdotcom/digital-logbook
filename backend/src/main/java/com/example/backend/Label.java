@@ -12,6 +12,8 @@ import lombok.With;
 public class Label {
 
     private String id;
+
     private String userId;
+
     private String name;
 }
