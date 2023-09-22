@@ -135,7 +135,7 @@ export default function SelectLabelSite(selectLabelProps: Props) {
     return (!userId ? <div>LOADING...</div> : (
         <>
             <Card className="wrapper">
-                <Header />
+                <Header user={selectLabelProps.user} />
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/select-label-img.png"></Image>
                 </Card.Title>
