@@ -103,7 +103,7 @@ export default function SelectStatusSite(selectStatusProps: Props) {
     return (
         <>
             <Card className="wrapper">
-                <Header />
+                <Header  user={selectStatusProps.user}/>
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/select-status-img.png"></Image>
                     <h2 className={"flex-div"}>Wähle den Status:</h2>
