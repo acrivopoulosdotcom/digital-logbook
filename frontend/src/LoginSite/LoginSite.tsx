@@ -4,14 +4,17 @@ import {Link, useNavigate} from "react-router-dom";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import axios from "axios";
 
-export default function LoginSite() {
+type Props = {
+    setUser: (user:string) => void
+}
+export default function LoginSite(loginPageProps:Props) {
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const nav = useNavigate();
 
-    function onChangeHandlerEmail(event: ChangeEvent<HTMLInputElement>) {
-        setEmail(event.target.value);
+    function onChangeHandlerUsername(event: ChangeEvent<HTMLInputElement>) {
+        setUsername(event.target.value);
     }
 
     function onChangeHandlerPassword(event: ChangeEvent<HTMLInputElement>) {
@@ -19,10 +22,10 @@ export default function LoginSite() {
     }
 
     function login(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        axios.post("/api/user/login", {email, password})
-            .then(() => nav("/"))
-            .then(() => console.log("es hat ohne Security geklappt"))
+        event.preventDefault();
+        axios.post("/api/user/login", undefined, {auth: {username, password}})
+            .then((response) => loginPageProps.setUser(response.data))
+            .then(() => nav("/home"))
             .catch((error) => console.log(error))
     }
 
@@ -37,7 +40,7 @@ export default function LoginSite() {
                     <Image className="main-logo" src="./images/logo.png" fluid />
                     <h3 className="main-h3">LOGIN</h3>
                     <Form className="form-area" onSubmit={login}>
-                        <input type="email" placeholder="Deine E-Mail-Adresse" onChange={onChangeHandlerEmail} required={true}></input>
+                        <input type="email" placeholder="Deine E-Mail-Adresse" onChange={onChangeHandlerUsername} required={true}></input>
                         <input type="password" placeholder="Dein Password" onChange={onChangeHandlerPassword} required={true}></input>
                         <button className="btn-a-standard btn-fullwidth">LOGIN</button>
                     </Form>
@@ -48,7 +51,6 @@ export default function LoginSite() {
                 </div>
 
             </Card>
-            {/*<p>LOGIN</p>*/}
         </>
     )
 }

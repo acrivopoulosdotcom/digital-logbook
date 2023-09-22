@@ -31,7 +31,7 @@ export default function AddLabelSite(addLabelProps: Props) {
     return (
         <>
             <Card className="wrapper">
-                <Header />
+                <Header user={addLabelProps.user} />
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/add-label-img.png"></Image>
 

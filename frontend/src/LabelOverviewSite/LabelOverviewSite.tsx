@@ -12,10 +12,14 @@ type Label = {
     name: string,
 }
 
-export default function LabelOverviewSite() {
+type Props = {
+    userId: string,
+    user: string
+}
+
+export default function LabelOverviewSite(labelOverviewProps: Props) {
     const [labels, setLabels] = useState<Label[]>([])
     const [refreshData, setRefreshData] = useState(false);
-    const userId = 1;
     const nav = useNavigate()
 
     function deleteLabel(labelId:string) {
@@ -32,7 +36,7 @@ export default function LabelOverviewSite() {
         if (refreshData) {
             axios({
                 method: 'get',
-                url: '/api/label/getAllLabels/' + userId,
+                url: '/api/label/getAllLabels/' + labelOverviewProps.userId,
             })
                 .then(function (response) {
                 console.log("Response Status: ", response.status);
@@ -43,13 +47,13 @@ export default function LabelOverviewSite() {
                 setRefreshData(false);
             });
         }
-    }, [userId, refreshData]);
+    }, [labelOverviewProps.userId, refreshData]);
 
     useEffect(() => {
 
             axios({
                 method: 'get',
-                url: '/api/label/getAllLabels/' + userId,
+                url: '/api/label/getAllLabels/' + labelOverviewProps.userId,
             })
                 .then(function (response) {
                     console.log("Response Status: ", response.status);
@@ -57,7 +61,7 @@ export default function LabelOverviewSite() {
                     setLabels(response.data);
                     window.scrollTo(0,0);
                 })
-    }, [userId]);
+    }, [labelOverviewProps.userId]);
 
     return (
         <>
@@ -65,7 +69,7 @@ export default function LabelOverviewSite() {
                 <h2>LOADING...</h2>
             ) : (
             <Card className="wrapper">
-                <Header />
+                <Header user={labelOverviewProps.user}/>
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/label-overview-img.png"></Image>
                     <h1>Deine <br />Label-Übersicht</h1>
@@ -82,7 +86,6 @@ export default function LabelOverviewSite() {
                 </Card.Body>
                 <Footer />
             </Card>)}
-            {/*<p>LABEL OVERVIEW</p>*/}
         </>
     );
 }
