@@ -7,34 +7,33 @@ import SelectDaySite from "./SelectDaySite/SelectDaySite.tsx";
 import LoginSite from "./LoginSite/LoginSite.tsx";
 import RegisterSite from "./RegisterSite/RegisterSite.tsx";
 import AddLabelSite from "./AddLabelSite/AddLabelSite.tsx";
-import AccessDataSite from "./AccessDataSite/AccessDataSite.tsx";
-import SettingsSite from "./SettingsSite/SettingsSite.tsx";
-import EntriesSite from "./EntriesSite/EntriesSite.tsx";
-import EditLabelSite from "./EditLabelSite/EditLabelSite.tsx";
 import LabelOverviewSite from "./LabelOverviewSite/LabelOverviewSite.tsx";
 import SelectLabelSite from "./SelectLabelSite/SelectLabelSite.tsx";
 import SelectStatusSite from "./SelectStatusSite/SelectStatusSite.tsx";
+import {useState} from "react";
+import ProtectedRoute from "./ProtectedRoutes/ProtectedRoutes.tsx";
 
 function App() {
+    const [user, setUser]= useState("testeingabe")
+    const [userId, setUserId] = useState("")
+
 
   return (
     <>
       <Router>
           <Routes>
-              <Route path="/login" element={<LoginSite />} />
+              <Route path="/" element={<LoginSite setUser={setUser}/>}/>
+              <Route path="/login" element={<LoginSite setUser={setUser}/>}/>
               <Route path="/register" element={<RegisterSite />} />
-              <Route path="/" element={<LogbookSite />} />
-              <Route path="/logbook" element={<LogbookSite />} />
-              <Route path="/accessdata" element={<AccessDataSite />} />
-              <Route path="/settings" element={<SettingsSite />} />
-              <Route path="/labelOverview" element={<LabelOverviewSite />} />
-              <Route path="/addLabel" element={<AddLabelSite />} />
-              <Route path="/editLabel" element={<EditLabelSite />} />
-              <Route path="/selectLabel" element={<SelectLabelSite />} />
-              <Route path="/newEntry" element={<NewEntrySite />} />
-              <Route path="/entries" element={<EntriesSite />} />
-              <Route path="/selectStatus" element={<SelectStatusSite />} />
-              <Route path="/selectDay" element={<SelectDaySite />} />
+              <Route element={<ProtectedRoute user={user}/>}>
+                  <Route path="/home" element={<LogbookSite user={user} setUserId={setUserId}/>} />
+                  <Route path="/labelOverview" element={<LabelOverviewSite user={user} userId={userId}/>} />
+                  <Route path="/addLabel" element={<AddLabelSite user={user} userId={userId}/>} />
+                  <Route path="/selectLabel" element={<SelectLabelSite user={user} userId={userId}/>} />
+                  <Route path="/newEntry" element={<NewEntrySite user={user} userId={userId}/>} />
+                  <Route path="/selectStatus" element={<SelectStatusSite user={user} userId={userId}/>} />
+                  <Route path="/selectDay" element={<SelectDaySite user={user} userId={userId}/>} />
+              </Route>
           </Routes>
       </Router>
     </>
