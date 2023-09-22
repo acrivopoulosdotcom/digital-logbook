@@ -5,10 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,6 +26,7 @@ class LabelControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void addLabel_whenEverythingIsOK_returnEntry() throws Exception {
         String newEntryJson =
                 """
@@ -35,7 +39,8 @@ class LabelControllerTest {
         mvc.perform(MockMvcRequestBuilders
                 .post("/api/label/addLabel")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(newEntryJson))
+                .content(newEntryJson)
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                    {
@@ -47,6 +52,7 @@ class LabelControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void addLabel_whenParamsAreEmpty_returnEmptyParamsFields() throws Exception {
         String newEntryJson =
                 """
@@ -59,7 +65,8 @@ class LabelControllerTest {
         mvc.perform(MockMvcRequestBuilders
                         .post("/api/label/addLabel")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(newEntryJson))
+                        .content(newEntryJson)
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json("""
                    {
@@ -115,22 +122,26 @@ class LabelControllerTest {
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void deleteLabelByLabelId_whenLabelIdExists_returnNoLabel() throws Exception{
         Label labelOne = new Label( "1","1", "Eins");
         labelRepository.save(labelOne);
 
-        mvc.perform(MockMvcRequestBuilders.delete("/api/label/deleteLabel/1"))
+        mvc.perform(MockMvcRequestBuilders.delete("/api/label/deleteLabel/1")
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @DirtiesContext
     @Test
+    @WithMockUser
     void deleteLabelByLabelId_whenLabelIdDoesNotExist_returnNoLabel() throws Exception{
         Label labelOne = new Label( "1","1", "Eins");
         labelRepository.save(labelOne);
 
-        mvc.perform(MockMvcRequestBuilders.delete("/api/label/deleteLabel/2"))
+        mvc.perform(MockMvcRequestBuilders.delete("/api/label/deleteLabel/2")
+                        .with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""));
     }

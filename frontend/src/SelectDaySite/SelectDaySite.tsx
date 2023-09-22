@@ -23,14 +23,19 @@ type Entry = {
     notes: string
 };
 
-export default function SelectDaySite() {
+type Props = {
+    userId: string,
+    user: string
+}
 
-    const userId: string = "1";
+export default function SelectDaySite(selectDayProps: Props) {
+
     const [date, setDate] = useState<Value>(new Date());
     const currentDate = date.toLocaleString("de-DE");
     const [entries, setEntries] = useState<Entry[]>([]);
     const [formattedDate, setFormattedDate] = useState("");
     const [status, setStatus] = useState("Erledigen");
+    const userId = selectDayProps.userId;
     console.log("Entries - Anfang der Seite: ",entries);
 
     const changeStatus = (entryId: string, entryStatus: string) => {

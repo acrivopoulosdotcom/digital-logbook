@@ -1,84 +1,59 @@
-import Container from 'react-bootstrap/Container';
 import "./Header.css";
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import {Image} from "react-bootstrap";
 import {useState} from "react";
-export default function Header() {
+import {Link} from "react-router-dom";
+import axios from "axios";
+import normalImage from "./burger-icon.png";
+import clickedImage from "./close-icon.png";
 
-    const [isHovered, setIsHovered] = useState(false);
-    const [isActive, setIsActive] = useState(false);
-    const isHeaderHidden: boolean = false;
+
+type Props = {
+    user: string
+}
+export default function Header(headerProps: Props) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [user, setUser] = useState("");
+    const [userId, setUserId] = useState("");
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleToggleClick = () => {
+        setIsOpen(!isOpen);
+        setIsClicked(!isClicked);
+    }
+
+    const handleLogout = () => {
+        axios.get('/api/user/currentUser/' + headerProps.user)
+            .then(response => {
+                console.log(response.data);
+                console.log(user);
+                setUserId(response.data)
+                console.log(userId)
+            })
+            .catch(error => {
+                console.error('Fehler beim Abmelden:', error);
+            });
+        setUser("");
+        setIsOpen(false);
+    };
 
     return (
-        <header id="header" className={`${isHeaderHidden ? 'header-hidden' : ''}`}>
-                <Navbar expand={'xxl'} className="bg-body-tertiary mb-3">
-                    <Container fluid>
-                        <Nav.Link className="container-textlogo"
-                                  href="/"
-                                  onMouseEnter={() => setIsHovered(true)}
-                                  onMouseLeave={() => setIsHovered(false)}
-                                  onTouchStart={() => setIsActive(true)}
-                                  onTouchEnd={() => setIsActive(false)}
-                        >
-                            <Image className="header-textlogo" src={isHovered || isActive ? "./icons/textlogo-white.png" : "./icons/textlogo.png"} />
-                        </Nav.Link>
-                        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'xxl'}`} />
-                        <Navbar.Offcanvas
-                            id={`offcanvasNavbar-expand-${'xxl'}`}
-                            aria-labelledby={`offcanvasNavbarLabel-expand-${'xxl'}`}
-                            placement="end"
-                        >
-                            <Offcanvas.Header closeButton>
-                                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${'xxl'}`}>
-                                    MENÜ
-                                </Offcanvas.Title>
-                            </Offcanvas.Header>
-                            <Offcanvas.Body>
-                                <Nav className="justify-content-end flex-grow-1 pe-3">
-                                    <NavDropdown
-                                        title="Dein Account"
-                                        id={`offcanvasNavbarDropdown-expand-${'xxl'}`}
-                                    >
-                                        <NavDropdown.Item href="/accessdata">Zugangsdaten</NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/settings">
-                                            Einstellungen
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                    <NavDropdown
-                                        title="Deine Label"
-                                        id={`offcanvasNavbarDropdown-expand-${'xxl'}`}
-                                    >
-                                        <NavDropdown.Item href="/labelOverview">
-                                            Label-Übersicht
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/addLabel">
-                                            Hinzufügen eines Labels
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                    <NavDropdown
-                                        title="Deine Einträge"
-                                        id={`offcanvasNavbarDropdown-expand-${'xxl'}`}
-                                    >
-                                        <NavDropdown.Item href="/newentry">
-                                            Eintrag hinzufügen
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Divider />
-                                        <NavDropdown.Item href="/logbook">
-                                            Dein Logbook
-                                        </NavDropdown.Item>
-                                    </NavDropdown>
-                                    <Nav.Link href="/login">Logout</Nav.Link>
+        <>
+            <div className={"header"}>
+                <div className="logo-row">
+                    <Link to={"/home"}>
+                        <img className={"header-textlogo"} src={"./icons/textlogo.png"} alt="Logo"/>
+                    </Link>
+                    <button className={"menu-toggle"} onClick={handleToggleClick}>
+                        <img className={"header-burger-icon"} src={isClicked ? clickedImage: normalImage} alt={"Burger Icon"}/>
+                    </button>
+                </div>
 
-                                </Nav>
-                            </Offcanvas.Body>
-                        </Navbar.Offcanvas>
-                    </Container>
-                </Navbar>
-        </header>
-    )
+            </div>
+            <div className={`menu ${isOpen ? 'open' : ''} link-column` }>
+                <Link className={"text-white btn-a-standard"} to={"/addLabel"} onClick={() => setIsOpen(false)}>Label erstellen</Link>
+                <Link className={"text-white btn-a-standard"} to={"/labelOverview"} onClick={() => setIsOpen(false)}>Labelübersicht</Link>
+                <Link className={"text-white btn-a-standard"} to={"/newEntry"} onClick={() => setIsOpen(false)}>Eintrag erstellen</Link>
+                <Link className={"text-white btn-a-s"} to={"/"} onClick={handleLogout}>Logout</Link>
+            </div>
+        </>
+    );
 }

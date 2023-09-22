@@ -14,7 +14,12 @@ type Label = {
     userId: string,
     name: string,
 }
-export default function NewEntrySite() {
+
+type Props = {
+    userId: string,
+    user: string
+}
+export default function NewEntrySite(newEntryProps: Props) {
 
     const nav = useNavigate();
     const [titel, setTitel] = useState("");
@@ -23,9 +28,9 @@ export default function NewEntrySite() {
     const [label, setLabel] = useState("");
     const [notes, setNotes] = useState("");
     const status = "Erledigen";
-    const userId = 1;
-    const [date, setDate] = useState<Date>(new Date())
+    const [date, setDate] = useState<Date>(new Date());
     const formattedDate = date.toLocaleDateString();
+    const userId = newEntryProps.userId;
 
     function handleOnChangeTitel(event:ChangeEvent<HTMLInputElement>) {
         setTitel(event.target.value);
@@ -38,7 +43,6 @@ export default function NewEntrySite() {
     function handleOnChangeLabel(event:ChangeEvent<HTMLSelectElement>) {
         const selectedLabel = event.target.value;
         setLabel(selectedLabel);
-       // setLabels([...labels, selectedLabel]);
     }
 
     function handleOnChangeNotes(event:ChangeEvent<HTMLInputElement>) {
@@ -49,7 +53,7 @@ export default function NewEntrySite() {
         event.preventDefault()
         axios.post('/api/entries/addEntry', {userId, status, formattedDate, titel, prio, label, notes})
             .then(() => console.log(userId, status, formattedDate, titel, prio, label, notes))
-            .then(() => nav("/logbook"))
+            .then(() => nav("/home"))
             .catch((error) => console.log(error))
     }
 
@@ -82,31 +86,29 @@ export default function NewEntrySite() {
                         locale="de-De"
                     />
                     <Form className="form-area" onSubmit={saveNewEntry}>
-
                         <h4 className={"display-date"}>{formattedDate}</h4>
                         <input type={"text"} placeholder={"Eintrag"} className={"text-center"} onChange={handleOnChangeTitel} required={true}></input>
                         <input type={"textarea"} placeholder={"Ergänzende Notizen"} className={"text-center"} onChange={handleOnChangeNotes}></input>
-                        <Form.Select aria-label="Default select example" onChange={handleOnChangePrio}>
+                        <select className={"btn-a-standard"} aria-label="Default select example" onChange={handleOnChangePrio}>
                             <option className={"text-center"}>Priorität wählen</option>
                             <option value={"Prio 1"} className={"text-center"}>Prio 1</option>
                             <option value={"Prio 2"} className={"text-center"}>Prio 2</option>
                             <option value={"Prio 3"} className={"text-center"}>Prio 3</option>
-                        </Form.Select>
-                        <Form.Select aria-label="Default select example" onChange={handleOnChangeLabel}>
+                        </select>
+                        <select className={"btn-a-standard"} aria-label="Default select example" onChange={handleOnChangeLabel}>
                             <option className={"text-center"}>Label wählen</option>
                             {labels.length > 0 && labels.map((label) => (
                                 <option key={label.id} value={label.name}>{label.name}</option>
                             ))}
-                        </Form.Select>
+                        </select>
                         <div>
                             <button className={"btn-a-standard btn-fullwidth"}>Hinzufügen</button>
                         </div>
-                        <Link className={"btn-a-standard fullwidth"} to={"/logbook"}>Abbrechen</Link>
+                        <Link className={"btn-a-standard fullwidth"} to={"/home"}>Abbrechen</Link>
                     </Form>
                 </Card.Body>
                 <Footer />
             </Card>
-            {/*<p>NEW ENTRY</p>*/}
         </>
     ))
 }

@@ -17,8 +17,13 @@ type Entry = {
     notes: string,
 }
 
-export default function SelectStatusSite() {
-    const userId = 1;
+type Props = {
+    userId: string,
+    user: string
+}
+
+export default function SelectStatusSite(selectStatusProps: Props) {
+    const userId = selectStatusProps.userId
     const [entries, setEntries] = useState<Entry[]>([]);
     const [status, setStatus] = useState("Erledigen");
 
@@ -98,7 +103,7 @@ export default function SelectStatusSite() {
     return (
         <>
             <Card className="wrapper">
-                <Header />
+                <Header  user={selectStatusProps.user}/>
                 <Card.Title className="card-title">
                     <Image className="site-img" src="./images/select-status-img.png"></Image>
                     <h2 className={"flex-div"}>Wähle den Status:</h2>
