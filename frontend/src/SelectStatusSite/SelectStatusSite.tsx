@@ -17,8 +17,13 @@ type Entry = {
     notes: string,
 }
 
-export default function SelectStatusSite() {
-    const userId = 1;
+type Props = {
+    userId: string,
+    user: string
+}
+
+export default function SelectStatusSite(selectStatusProps: Props) {
+    const userId = selectStatusProps.userId
     const [entries, setEntries] = useState<Entry[]>([]);
     const [status, setStatus] = useState("Erledigen");
 

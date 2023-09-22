@@ -1,24 +1,8 @@
-header {
+.header {
+    background-color: white;
     width: 100%;
     display: flex;
     justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index:100;
-}
-
-.header-hidden {
-    transform: translateY(-100%);
-}
-
-nav {
-    width: 100%;
-}
-
-.navbar {
-    padding: 1.25rem .5rem !important;
 }
 
 .header-textlogo {
@@ -27,36 +11,105 @@ nav {
     border-radius: 5px;
     padding: 8px;
 }
+.header-burger-icon {
+    width:46px;
+}
 
-.header-textlogo:hover {
-    border-radius: 5px;
-    padding: 8px;
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: #0097B2;
+    padding: 0 10px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.navbar a {
+    color: #9adcff;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 5px 20px;
+    margin-left: 10px;
+    border-radius: 20px;
+    transition: background-color 0.2s;
+    background-color: #0097B2;
+    border: 2px solid transparent;
+    box-sizing: border-box;
+    animation: rainbow 5s infinite linear;
+}
+
+.navbar a:hover {
     background-color: #00697c;
-    border: 2px solid #00697c;
 }
 
-.header-textlogo:active {
-    box-shadow: 5px 5px 4px -3px rgba(0,0,0,0.15);
+.logo-row {
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.navbar-toggler {
-    border: 2px solid #00697c !important;
+.link-column {
+    background-color: #0097B2;
 }
 
-button.navbar-toggler:hover {
-    background-color: #00697c !important;
+@media (max-width: 1200px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .logo-container {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu {
+        flex-direction: column;
+        gap: 16px;
+        width: 100%;
+        background-color: #0097B2;
+        display: none;
+        padding: 16px 0;
+    }
+
+    .menu.open {
+        display: flex;
+    }
+
+    .btn-a-standard:hover {
+        background-color: #00697c;
+    }
+
+    .menu-toggle:hover {
+        background-color: #0097B2;
+    }
 }
-
-.navbar-toggler-icon:hover {
-    filter: invert(100%) !important;
-}
-
-.navbar-toggler:hover {
-    background-color: transparent !important;
-}
-
-
-
 
 
 
