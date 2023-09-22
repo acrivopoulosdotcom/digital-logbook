@@ -23,13 +23,18 @@ type Entry = {
     notes: string,
 }
 
-export default function SelectLabelSite() {
+type Props = {
+    userId: string,
+    user: string
+}
+
+export default function SelectLabelSite(selectLabelProps: Props) {
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [label, setLabel] = useState<string>("");
     const [status, setStatus] = useState<string>("erledigen");
     const [entries, setEntries] = useState<Entry[]>([]);
-    const userId = 1;
+    const userId = selectLabelProps.userId;
 
     function changeStatus(entryId: string, entryStatus:string) {
         const updatedEntries = entries.map((entry) => {
